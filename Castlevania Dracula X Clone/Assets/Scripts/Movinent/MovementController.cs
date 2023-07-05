@@ -6,6 +6,7 @@ public class MovementController : MonoBehaviour
     public float jumpForce = 5f; // Força do pulo
     private bool isJumping = false; // Verifica se o personagem está pulando
     private bool isCrouching = false; // Verifica se o personagem está agachado
+    private bool isAlert = false; // Verifica se o personagem está em estado de alerta
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
     private Animator animator;
@@ -43,7 +44,7 @@ public class MovementController : MonoBehaviour
         Vector2 movement = new Vector2(horizontalInput, 0f);
 
         // Verificar se o jogador está agachado para bloquear o movimento
-        if (!isCrouching)
+        if (!isCrouching && !isAlert)
         {
             // Normalizar o vetor de movimento para manter a velocidade constante
             movement = movement.normalized;
@@ -62,7 +63,6 @@ public class MovementController : MonoBehaviour
                 spriteRenderer.flipX = false;
             }
         }
-
         else if (horizontalInput < 0)
         {
             spriteRenderer.flipX = true;
@@ -73,7 +73,7 @@ public class MovementController : MonoBehaviour
         }
 
         // Verificar se o jogador está no chão e pressionou o botão de espaço para pular
-        if (Input.GetKeyDown(KeyCode.Space) && !isJumping && !isCrouching)
+        if (Input.GetKeyDown(KeyCode.Space) && !isJumping && !isCrouching && !isAlert)
         {
             // Aplicar uma força vertical para simular o pulo
             rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
@@ -84,13 +84,25 @@ public class MovementController : MonoBehaviour
         }
 
         // Verificar se o jogador está se movendo horizontalmente para reproduzir a animação "Walk"
-        if (Mathf.Abs(horizontalInput) > 0f && !isCrouching)
+        if (Mathf.Abs(horizontalInput) > 0f && !isCrouching && !isAlert)
         {
             animator.SetBool("IsWalking", true);
         }
         else
         {
             animator.SetBool("IsWalking", false);
+        }
+
+        // Verificar se a tecla "Vertical Cima" está pressionada para ativar o estado de alerta
+        if (verticalInput > 0)
+        {
+            isAlert = true;
+            animator.SetBool("Alerta", true);
+        }
+        else
+        {
+            isAlert = false;
+            animator.SetBool("Alerta", false);
         }
     }
 
@@ -101,8 +113,8 @@ public class MovementController : MonoBehaviour
         {
             isJumping = false;
 
-            // Voltar à animação de "Idle" se não estiver agachado
-            if (!isCrouching)
+            // Voltar à animação de "Idle" se não estiver agachado e não estiver em estado de alerta
+            if (!isCrouching && !isAlert)
             {
                 animator.SetBool("Jump", false);
             }
