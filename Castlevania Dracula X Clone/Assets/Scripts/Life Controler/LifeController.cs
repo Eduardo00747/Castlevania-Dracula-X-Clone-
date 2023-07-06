@@ -54,7 +54,7 @@ public class LifeController : MonoBehaviour
         // Desativa qualquer controle de movimento do personagem
         // Por exemplo, você pode desabilitar scripts de movimento, desabilitar componentes de física, etc.
         // Desabilita o script de movimento do personagem
-        GetComponent<MovementController>().enabled = false;
+        GetComponent<PlayerController>().enabled = false;
     }
 
     private void DisableCharacter()

@@ -8,6 +8,8 @@ TagManager:
   - Ataque
   - Inimigo
   - Faca
+  - Coracao
+  - Coracao Grande
   layers:
   - Default
   - TransparentFX
