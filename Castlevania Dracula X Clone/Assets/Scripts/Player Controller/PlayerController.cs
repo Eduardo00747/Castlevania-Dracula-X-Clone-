@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
     private bool isCrouching = false; // Verifica se o personagem está agachado
     private bool isAlert = false; // Verifica se o personagem está em estado de alerta
     private bool isAttacking = false; // Verifica se o personagem está atacando
+    public GameObject hitBoxAtaque; // Referência ao objeto HitBoxAtaque
+
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
     private Animator animator;
@@ -18,8 +20,6 @@ public class PlayerController : MonoBehaviour
     private int coracoesColetados = 0; // Contagem de corações coletados
 
     private bool canMoveHorizontally = true; // Controla se o personagem pode se mover horizontalmente
-
-
 
     private void Start()
     {
@@ -126,13 +126,25 @@ public class PlayerController : MonoBehaviour
         {
             isAttacking = true;
             animator.SetBool("Ataque", true);
+
+            // Ativar o objeto HitBoxAtaque após um atraso de 0.08 segundos
+            Invoke("ActivateHitBoxAtaque", 0.08f);
         }
+    }
+
+    private void ActivateHitBoxAtaque()
+    {
+        // Ativar o objeto HitBoxAtaque
+        hitBoxAtaque.SetActive(true);
     }
 
     public void EndAttackAnimation()
     {
         isAttacking = false;
         animator.SetBool("Ataque", false);
+
+        // Desativar o objeto HitBoxAtaque
+        hitBoxAtaque.SetActive(false);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

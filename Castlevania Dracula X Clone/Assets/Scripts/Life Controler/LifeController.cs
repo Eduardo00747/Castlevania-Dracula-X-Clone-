@@ -71,8 +71,6 @@ public class LifeController : MonoBehaviour
             // Reduz 10 pontos de vida
             TakeDamage(10);
 
-            // Destroi o projétil
-            Destroy(collision.gameObject);
         }
     }
 }
