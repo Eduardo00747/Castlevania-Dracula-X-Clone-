@@ -17,6 +17,9 @@ public class PlayerController : MonoBehaviour
 
     private int coracoesColetados = 0; // Contagem de corações coletados
 
+    private bool canMoveHorizontally = true; // Controla se o personagem pode se mover horizontalmente
+
+
 
     private void Start()
     {
@@ -54,7 +57,7 @@ public class PlayerController : MonoBehaviour
         Vector2 movement = new Vector2(horizontalInput, 0f);
 
         // Verificar se o jogador está agachado para bloquear o movimento
-        if (!isCrouching && !isAlert && !isAttacking)
+        if (!isCrouching && !isAlert && !isAttacking && canMoveHorizontally)
         {
             // Normalizar o vetor de movimento para manter a velocidade constante
             movement = movement.normalized;
@@ -63,21 +66,21 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector2(movement.x * speed, rb.velocity.y);
 
             // Verificar se o jogador está se movendo para a esquerda e inverter o sprite
-            if (horizontalInput < 0)
+            if (horizontalInput < 0 && !isJumping)
             {
                 spriteRenderer.flipX = true;
             }
             // Verificar se o jogador está se movendo para a direita e restaurar a orientação do sprite
-            else if (horizontalInput > 0)
+            else if (horizontalInput > 0 && !isJumping)
             {
                 spriteRenderer.flipX = false;
             }
         }
-        else if (horizontalInput < 0)
+        else if (horizontalInput < 0 && !isJumping)
         {
             spriteRenderer.flipX = true;
         }
-        else if (horizontalInput > 0)
+        else if (horizontalInput > 0 && !isJumping)
         {
             spriteRenderer.flipX = false;
         }
@@ -91,10 +94,13 @@ public class PlayerController : MonoBehaviour
 
             // Ativar a animação de pulo
             animator.SetBool("Jump", true);
+
+            // Bloquear o movimento horizontal durante o pulo
+            canMoveHorizontally = false;
         }
 
         // Verificar se o jogador está se movendo horizontalmente para reproduzir a animação "Walk"
-        if (Mathf.Abs(horizontalInput) > 0f && !isCrouching && !isAlert && !isAttacking)
+        if (Mathf.Abs(horizontalInput) > 0f && !isCrouching && !isAlert && !isAttacking && canMoveHorizontally)
         {
             animator.SetBool("IsWalking", true);
         }
@@ -121,7 +127,6 @@ public class PlayerController : MonoBehaviour
             isAttacking = true;
             animator.SetBool("Ataque", true);
         }
-
     }
 
     public void EndAttackAnimation()
@@ -142,6 +147,9 @@ public class PlayerController : MonoBehaviour
             {
                 animator.SetBool("Jump", false);
             }
+
+            // Desbloquear o movimento horizontal quando tocar o chão
+            canMoveHorizontally = true;
         }
 
         // Verificar se o personagem colidiu com um objeto de tag "Coracao"
