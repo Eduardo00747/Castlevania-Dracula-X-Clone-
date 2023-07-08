@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class VelaItens : MonoBehaviour
 {
-    public GameObject SubItem; // Prefab do objeto "Coração Pequeno"
+    public GameObject SubItem; // Prefab do objeto "Coração"
 
     private void OnDestroy()
     {
