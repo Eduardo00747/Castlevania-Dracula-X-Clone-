@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6269558219645619103}
   - component: {fileID: 6269558219645619101}
   - component: {fileID: 6269558219645619097}
+  - component: {fileID: -3577394449505315772}
   m_Layer: 0
   m_Name: Machado
   m_TagString: Machado
@@ -123,3 +124,15 @@ CircleCollider2D:
   m_Offset: {x: 0, y: -0.006873375}
   serializedVersion: 2
   m_Radius: 0.12187337
+--- !u!114 &-3577394449505315772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6269558219645619090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 518eec5fcecb17d49802cfc9ce3073f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

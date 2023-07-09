@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2117563265167637262}
   - component: {fileID: 2117563265167637260}
   - component: {fileID: 2117563265167637256}
+  - component: {fileID: -1007406743688524997}
   m_Layer: 0
   m_Name: Agua Benta
   m_TagString: Agua Benta
@@ -123,3 +124,15 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.114999995
+--- !u!114 &-1007406743688524997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2117563265167637261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 518eec5fcecb17d49802cfc9ce3073f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
