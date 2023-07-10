@@ -3,22 +3,31 @@ using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
+    //Variaveis nescessarias para a mecaninca do personagem
     public float speed = 5f; // Velocidade de movimento
     public float jumpForce = 5f; // Força do pulo
     private bool isJumping = false; // Verifica se o personagem está pulando
     private bool isCrouching = false; // Verifica se o personagem está agachado
     private bool isAlert = false; // Verifica se o personagem está em estado de alerta
     private bool isAttacking = false; // Verifica se o personagem está atacando
-    public GameObject hitBoxAtaque; // Referência ao objeto HitBoxAtaque
 
+    //Variação ´para os objetos filhos
+    public GameObject hitBoxAtaque; // Referência ao objeto HitBoxAtaque
+    public GameObject dropItem; // Referência ao objeto Drop Item
+
+    // Variáveis adicionais
+    private float hitBoxOffsetX = 0.811f; // Posição X inicial da HitBoxAtaque
+    private float dropItemOffsetX = 0.44f; // Posição X inicial do Drop Item
+    private bool isMovingLeft = false; // Verifica se o personagem está se movendo para a esquerda
+
+    //Corpo e sprite do objeto do personagem 
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
     private Animator animator;
 
+    //Contagem de coração
     public TMP_Text contagemCoracoesText; // Referência para o objeto de texto "Contagem Corações"
-
     private int coracoesColetados = 0; // Contagem de corações coletados
-
     private bool canMoveHorizontally = true; // Controla se o personagem pode se mover horizontalmente
 
     private void Start()
@@ -130,6 +139,31 @@ public class PlayerController : MonoBehaviour
             // Ativar o objeto HitBoxAtaque após um atraso de 0.08 segundos
             Invoke("ActivateHitBoxAtaque", 0.08f);
         }
+
+        // Verificar a direção do movimento horizontal para atualizar a posição da HitBoxAtaque
+        if (horizontalInput < 0)
+        {
+            isMovingLeft = true;
+        }
+        else if (horizontalInput > 0)
+        {
+            isMovingLeft = false;
+        }
+    }
+
+    private void LateUpdate()
+    {
+        // Atualizar a posição da HitBoxAtaque com base na direção do movimento
+        float hitBoxPosX = isMovingLeft ? -hitBoxOffsetX : hitBoxOffsetX;
+        Vector3 hitBoxPos = hitBoxAtaque.transform.localPosition;
+        hitBoxPos.x = hitBoxPosX;
+        hitBoxAtaque.transform.localPosition = hitBoxPos;
+
+        // Atualizar a posição do Drop Item com base na direção do movimento
+        float dropItemPosX = isMovingLeft ? dropItemOffsetX : -dropItemOffsetX;
+        Vector3 dropItemPos = dropItem.transform.localPosition;
+        dropItemPos.x = dropItemPosX;
+        dropItem.transform.localPosition = dropItemPos;
     }
 
     private void ActivateHitBoxAtaque()
