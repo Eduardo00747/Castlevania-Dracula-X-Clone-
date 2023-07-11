@@ -7,6 +7,11 @@ public class EnemyHealth : MonoBehaviour
 
     public GameObject esqueletoPequeno; // Referência para o objeto "Esqueleto Pequeno"
 
+    public GameObject cabecaPrefab;
+    public GameObject troncoPrefab;
+    public GameObject bracoPrefab;
+    public GameObject pernaPrefab;
+
     private void Start()
     {
         currentHealth = maxHealth; // Inicializa a vida atual com o valor máximo
@@ -29,9 +34,14 @@ public class EnemyHealth : MonoBehaviour
         Destroy(esqueletoPequeno);
         Debug.Log("O inimigo morreu!");
 
+        // Ativar e soltar os objetos filhos
+        Instantiate(cabecaPrefab, transform.position, Quaternion.identity);
+        Instantiate(troncoPrefab, transform.position, Quaternion.identity);
+        Instantiate(bracoPrefab, transform.position, Quaternion.identity);
+        Instantiate(pernaPrefab, transform.position, Quaternion.identity);
+
         // Aqui você pode adicionar a lógica para o que acontece quando o inimigo morre,
         // como dar pontos ao jogador, reproduzir uma animação de morte, etc.
-
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

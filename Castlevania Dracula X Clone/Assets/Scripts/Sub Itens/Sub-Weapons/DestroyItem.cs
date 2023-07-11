@@ -4,27 +4,29 @@ using UnityEngine;
 
 public class DestroyItem : MonoBehaviour
 {
-    private Renderer objectRenderer;
+    [SerializeField] private Renderer objectRenderer;
+    [SerializeField] private float blinkDuration = 1.5f;
+    [SerializeField] private float blinkInterval = 0.2f;
+    [SerializeField] private float destroyDelay = 0.3f;
 
     private void Start()
     {
-        objectRenderer = GetComponent<Renderer>();
         StartCoroutine(BlinkAndDestroy());
     }
 
     private IEnumerator BlinkAndDestroy()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(blinkDuration);
 
         // Ativar e desativar o Renderer para fazer o objeto piscar
         for (int i = 0; i < 5; i++)
         {
             objectRenderer.enabled = !objectRenderer.enabled;
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(blinkInterval);
         }
 
-        // Aguardar mais 0,3 segundos antes de destruir o objeto
-        yield return new WaitForSeconds(0.3f);
+        // Aguardar mais um tempo antes de destruir o objeto
+        yield return new WaitForSeconds(destroyDelay);
 
         Destroy(gameObject);
     }

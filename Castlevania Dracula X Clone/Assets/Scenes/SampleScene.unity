@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 24927845}
   - component: {fileID: 24927847}
   - component: {fileID: 24927848}
-  - component: {fileID: 24927849}
+  - component: {fileID: 24927855}
   - component: {fileID: 24927851}
   - component: {fileID: 24927850}
   - component: {fileID: 24927853}
@@ -236,32 +236,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!61 &24927849
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 24927844}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.008074224}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.28, y: 0.51}
-    newSize: {x: 0.28, y: 0.51}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.28, y: 0.52614844}
-  m_EdgeRadius: 0
 --- !u!114 &24927850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -311,7 +285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ce9b90d6c593a24bbbe16ef2eae7b9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 30
+  maxHealth: 100
   currentHealth: 0
 --- !u!114 &24927854
 MonoBehaviour:
@@ -336,6 +310,22 @@ MonoBehaviour:
   aguaBentaPrefab: {fileID: 2117563265167637261, guid: b45e504c9a740bc46b6d9e53165e6392, type: 3}
   dropItem: {fileID: 1173489729}
   equippedItem: 0
+--- !u!70 &24927855
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 24927844}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.28, y: 0.51}
+  m_Direction: 0
 --- !u!1 &99926692
 GameObject:
   m_ObjectHideFlags: 0
@@ -764,7 +754,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &242178385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2046,7 +2036,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 644660348}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.8277283, y: -1.9082115, z: 0}
+  m_LocalPosition: {x: -3.8277283, y: -1.8682115, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2582,7 +2572,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1035295597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3671,11 +3661,11 @@ GameObject:
   - component: {fileID: 1617785557}
   m_Layer: 0
   m_Name: Esqueleto Pequeno
-  m_TagString: Untagged
+  m_TagString: Inimigo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1617785557
 Transform:
   m_ObjectHideFlags: 0
@@ -3684,7 +3674,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1617785556}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -33.98, y: 0.14981015, z: -0.05451508}
+  m_LocalPosition: {x: -33.98, y: 0.21, z: -0.05451508}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3786,7 +3776,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1658132405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3988,7 +3978,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1669796422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4197,7 +4187,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1835018477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4328,7 +4318,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1876383197}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 26.43, y: -1.42, z: -0.06197675}
+  m_LocalPosition: {x: 26.43, y: -1.38, z: -0.06197675}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4354,7 +4344,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!61 &1883649871
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5067,8 +5057,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4498284c998f9384e99ac225c41b9032, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 30
-  esqueletoPequeno: {fileID: 1617785556}
+  maxHealth: 10
+  esqueletoPequeno: {fileID: 2122263817}
+  cabecaPrefab: {fileID: 8093348814156849985, guid: 8bf8b0eceba9f094ba42bc3597501233, type: 3}
+  troncoPrefab: {fileID: 5301834476621188061, guid: 446ee1ac82108c04e9ae2389222c73f5, type: 3}
+  bracoPrefab: {fileID: 735523399271676567, guid: 669a1a907f11c4948b96d33aa041aa77, type: 3}
+  pernaPrefab: {fileID: 7479441564247667693, guid: 09ed288ca068cdb488277bb36097a86b, type: 3}
 --- !u!1 &476511361623082466
 GameObject:
   m_ObjectHideFlags: 0
