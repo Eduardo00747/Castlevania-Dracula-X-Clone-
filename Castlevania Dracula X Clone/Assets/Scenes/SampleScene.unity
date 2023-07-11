@@ -250,6 +250,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   jumpForce: 5
+  knockbackForce: 4
+  knockbackDuration: 0.5
   hitBoxAtaque: {fileID: 1527201175}
   dropItem: {fileID: 1173489729}
   contagemCoracoesText: {fileID: 601797786}
@@ -285,7 +287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ce9b90d6c593a24bbbe16ef2eae7b9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 30
   currentHealth: 0
 --- !u!114 &24927854
 MonoBehaviour:

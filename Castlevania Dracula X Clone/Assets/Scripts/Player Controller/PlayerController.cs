@@ -1,17 +1,22 @@
+using System.Collections;
 using UnityEngine;
 using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
-    //Variaveis nescessarias para a mecaninca do personagem
+    // Variáveis necessárias para a mecânica do personagem
     public float speed = 5f; // Velocidade de movimento
     public float jumpForce = 5f; // Força do pulo
+    public float knockbackForce = 5f; // Força do knockback
+    public float knockbackDuration = 0.5f; // Duração do knockback
+
     private bool isJumping = false; // Verifica se o personagem está pulando
     private bool isCrouching = false; // Verifica se o personagem está agachado
     private bool isAlert = false; // Verifica se o personagem está em estado de alerta
     private bool isAttacking = false; // Verifica se o personagem está atacando
+    private bool canFlip = true; // Verifica se o personagem pode fazer flip
 
-    //Variação ´para os objetos filhos
+    // Variação para os objetos filhos
     public GameObject hitBoxAtaque; // Referência ao objeto HitBoxAtaque
     public GameObject dropItem; // Referência ao objeto Drop Item
 
@@ -20,12 +25,12 @@ public class PlayerController : MonoBehaviour
     private float dropItemOffsetX = 0.44f; // Posição X inicial do Drop Item
     private bool isMovingLeft = false; // Verifica se o personagem está se movendo para a esquerda
 
-    //Corpo e sprite do objeto do personagem 
+    // Corpo e sprite do objeto do personagem
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
     private Animator animator;
 
-    //Contagem de coração
+    // Contagem de coração
     public TMP_Text contagemCoracoesText; // Referência para o objeto de texto "Contagem Corações"
     private int coracoesColetados = 0; // Contagem de corações coletados
     private bool canMoveHorizontally = true; // Controla se o personagem pode se mover horizontalmente
@@ -75,21 +80,21 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector2(movement.x * speed, rb.velocity.y);
 
             // Verificar se o jogador está se movendo para a esquerda e inverter o sprite
-            if (horizontalInput < 0 && !isJumping)
+            if (horizontalInput < 0 && !isJumping && canFlip)
             {
                 spriteRenderer.flipX = true;
             }
             // Verificar se o jogador está se movendo para a direita e restaurar a orientação do sprite
-            else if (horizontalInput > 0 && !isJumping)
+            else if (horizontalInput > 0 && !isJumping && canFlip)
             {
                 spriteRenderer.flipX = false;
             }
         }
-        else if (horizontalInput < 0 && !isJumping)
+        else if (horizontalInput < 0 && !isJumping && canFlip)
         {
             spriteRenderer.flipX = true;
         }
-        else if (horizontalInput > 0 && !isJumping)
+        else if (horizontalInput > 0 && !isJumping && canFlip)
         {
             spriteRenderer.flipX = false;
         }
@@ -226,5 +231,33 @@ public class PlayerController : MonoBehaviour
             // Atualizar o objeto de texto com a nova contagem de corações
             contagemCoracoesText.text = "// " + coracoesColetados.ToString();
         }
+
+        // Verificar se o personagem colidiu com um objeto de tag "Inimigo"
+        if (collision.gameObject.CompareTag("Inimigo"))
+        {
+            // Desabilitar a movimentação horizontal
+            canMoveHorizontally = false;
+            canFlip = false;
+
+            // Ativar animação de dano
+            animator.SetBool("isDano", true);
+
+            // Aplicar knockback
+            Vector2 knockbackDirection = transform.position - collision.transform.position;
+            rb.AddForce(knockbackDirection.normalized * knockbackForce, ForceMode2D.Impulse);
+
+            // Aguardar um tempo antes de permitir a movimentação e o flip novamente
+            StartCoroutine(EnableMovementAfterDelay(knockbackDuration));
+        }
+    }
+
+    private IEnumerator EnableMovementAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        canMoveHorizontally = true;
+        canFlip = true;
+
+        // Desativar animação de dano
+        animator.SetBool("isDano", false);
     }
 }

@@ -41,7 +41,7 @@ public class LifeController : MonoBehaviour
         DisableMovement();
 
         // Desativa o GameObject do personagem após um tempo para permitir que a animação de morte seja reproduzida
-        Invoke("DisableCharacter", 1f);
+        Invoke(nameof(DisableCharacter), 1f);
 
         Debug.Log("O personagem morreu!");
 
@@ -70,7 +70,6 @@ public class LifeController : MonoBehaviour
         {
             // Reduz 10 pontos de vida
             TakeDamage(10);
-
         }
     }
 }
