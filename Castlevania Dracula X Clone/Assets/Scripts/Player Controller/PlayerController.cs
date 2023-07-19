@@ -16,6 +16,11 @@ public class PlayerController : MonoBehaviour
     private bool isAttacking = false; // Verifica se o personagem está atacando
     private bool canFlip = true; // Verifica se o personagem pode fazer flip
 
+    private bool isThrowingWeapon = false; // Verifica se o personagem está jogando a arma
+    private bool isAttackingDown = false; // Verifica se o personagem está realizando um ataque abaixado
+
+
+
     // Variação para os objetos filhos
     public GameObject hitBoxAtaque; // Referência ao objeto HitBoxAtaque
     public GameObject dropItem; // Referência ao objeto Drop Item
@@ -135,14 +140,37 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("Alerta", false);
         }
 
-        // Verificar se o jogador pressionou a tecla "K" para iniciar o ataque
-        if (Input.GetKeyDown(KeyCode.K) && !isAttacking)
+        // Verificar se o jogador está pressionando "Vertical Cima" e "K" para jogar a arma
+        if (verticalInput > 0 && Input.GetKeyDown(KeyCode.K) && !isThrowingWeapon)
+        {
+            isThrowingWeapon = true;
+            animator.SetBool("ThrowWeapon", true);
+            // Coloque aqui o código adicional necessário quando o jogador joga a arma
+        }
+
+        // Verificar se o jogador está pressionando "Vertical Baixo" e "K" para realizar o ataque abaixado
+        if (verticalInput < 0 && Input.GetKeyDown(KeyCode.K) && !isAttacking && !isAlert)
+        {
+            isAttackingDown = true;
+            animator.SetBool("AtaqueDown", true);
+
+            // Ativar o objeto HitBoxAtaque após um atraso de 0.08 segundos
+            Invoke("ActivateHitBoxAtaque", 0.08f);
+        }
+
+
+        // Verificar se o jogador pressionou a tecla "K" para iniciar o ataque, mas apenas se não estiver no estado de alerta
+        if (Input.GetKeyDown(KeyCode.K) && !isAttacking && !isAlert)
         {
             isAttacking = true;
             animator.SetBool("Ataque", true);
 
             // Ativar o objeto HitBoxAtaque após um atraso de 0.08 segundos
             Invoke("ActivateHitBoxAtaque", 0.08f);
+        }
+        else if (!isAttackingDown)
+        {
+            animator.SetBool("AtaqueDown", false);
         }
 
         // Verificar a direção do movimento horizontal para atualizar a posição da HitBoxAtaque
@@ -169,6 +197,14 @@ public class PlayerController : MonoBehaviour
         Vector3 dropItemPos = dropItem.transform.localPosition;
         dropItemPos.x = dropItemPosX;
         dropItem.transform.localPosition = dropItemPos;
+
+        // Verificar se a animação de jogar arma terminou
+        if (isThrowingWeapon && animator.GetCurrentAnimatorStateInfo(0).IsName("Jogar arma") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+        {
+            isThrowingWeapon = false;
+            animator.SetBool("ThrowWeapon", false);
+        }
+
     }
 
     private void ActivateHitBoxAtaque()
@@ -184,6 +220,12 @@ public class PlayerController : MonoBehaviour
 
         // Desativar o objeto HitBoxAtaque
         hitBoxAtaque.SetActive(false);
+
+        if (isAttackingDown)
+        {
+            isAttackingDown = false;
+            animator.SetBool("AtaqueDown", false);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

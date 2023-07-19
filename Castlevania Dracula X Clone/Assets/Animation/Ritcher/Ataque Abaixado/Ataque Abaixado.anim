@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ataque
+  m_Name: Ataque Abaixado
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,19 +20,15 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: 4017cf8f34bd76a439a3db14078ace94, type: 3}
+      value: {fileID: 21300000, guid: a41ebbc2a78b0b143ac96097c8a19b36, type: 3}
     - time: 0.11111111
-      value: {fileID: 21300000, guid: 82f85dc674c87984f9d096cc4cde2247, type: 3}
+      value: {fileID: 21300000, guid: 4838410db75be744d8e18af27d4c8881, type: 3}
     - time: 0.22222222
-      value: {fileID: 21300000, guid: 2f308f035d560a3418301466bb8f41c2, type: 3}
+      value: {fileID: 21300000, guid: 3adf49d17446d394d93a35b2fdd44b64, type: 3}
     - time: 0.33333334
-      value: {fileID: 21300000, guid: bc176d319b670b04b909837847eed619, type: 3}
+      value: {fileID: 21300000, guid: 70a28407330fb7c44adce78a046244a4, type: 3}
     - time: 0.44444445
-      value: {fileID: 21300000, guid: 4b489c36205fffe4b88795dadcdb4658, type: 3}
-    - time: 0.5555556
-      value: {fileID: 21300000, guid: 324fa96cac7ec1b4591892f20005f7a3, type: 3}
-    - time: 0.6666667
-      value: {fileID: 21300000, guid: 6243afaa1c1e511498b7775e2eeb2932, type: 3}
+      value: {fileID: 21300000, guid: 3cbff50e46c57d74aa4e46a7d0a840e3, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -52,19 +48,17 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 4017cf8f34bd76a439a3db14078ace94, type: 3}
-    - {fileID: 21300000, guid: 82f85dc674c87984f9d096cc4cde2247, type: 3}
-    - {fileID: 21300000, guid: 2f308f035d560a3418301466bb8f41c2, type: 3}
-    - {fileID: 21300000, guid: bc176d319b670b04b909837847eed619, type: 3}
-    - {fileID: 21300000, guid: 4b489c36205fffe4b88795dadcdb4658, type: 3}
-    - {fileID: 21300000, guid: 324fa96cac7ec1b4591892f20005f7a3, type: 3}
-    - {fileID: 21300000, guid: 6243afaa1c1e511498b7775e2eeb2932, type: 3}
+    - {fileID: 21300000, guid: a41ebbc2a78b0b143ac96097c8a19b36, type: 3}
+    - {fileID: 21300000, guid: 4838410db75be744d8e18af27d4c8881, type: 3}
+    - {fileID: 21300000, guid: 3adf49d17446d394d93a35b2fdd44b64, type: 3}
+    - {fileID: 21300000, guid: 70a28407330fb7c44adce78a046244a4, type: 3}
+    - {fileID: 21300000, guid: 3cbff50e46c57d74aa4e46a7d0a840e3, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.7777778
+    m_StopTime: 0.5555556
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -84,14 +78,7 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.6666667
-    functionName: ActivateHitBoxAtaque
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.6666667
+  - time: 0.44444445
     functionName: EndAttackAnimation
     data: 
     objectReferenceParameter: {fileID: 0}
