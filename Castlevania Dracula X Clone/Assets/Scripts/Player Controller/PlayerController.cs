@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
 
     // Contagem de coração
     public TMP_Text contagemCoracoesText; // Referência para o objeto de texto "Contagem Corações"
-    private int coracoesColetados = 0; // Contagem de corações coletados
+    public int coracoesColetados = 10; // Contagem de corações coletados
     private bool canMoveHorizontally = true; // Controla se o personagem pode se mover horizontalmente
 
     private void Start()
@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
 
         // Inicializar o objeto de texto com a contagem de corações
-        contagemCoracoesText.text = "// 0";
+        contagemCoracoesText.text = "// 10";
     }
 
     private void Update()
@@ -301,5 +301,13 @@ public class PlayerController : MonoBehaviour
 
         // Desativar animação de dano
         animator.SetBool("isDano", false);
+    }
+
+    public void SubtractHeart()
+    {
+        coracoesColetados--;
+
+        // Atualizar o objeto de texto com a nova contagem de corações
+        contagemCoracoesText.text = "// " + coracoesColetados.ToString();
     }
 }

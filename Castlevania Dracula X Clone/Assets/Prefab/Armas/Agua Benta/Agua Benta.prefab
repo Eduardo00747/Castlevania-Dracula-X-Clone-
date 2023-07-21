@@ -136,3 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 518eec5fcecb17d49802cfc9ce3073f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectRenderer: {fileID: 2117563265167637262}
+  blinkDuration: 1.5
+  blinkInterval: 0.2
+  destroyDelay: 0.3
