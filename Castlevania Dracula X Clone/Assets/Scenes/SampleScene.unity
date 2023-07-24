@@ -136,9 +136,9 @@ GameObject:
   - component: {fileID: 24927848}
   - component: {fileID: 24927855}
   - component: {fileID: 24927851}
-  - component: {fileID: 24927850}
   - component: {fileID: 24927853}
   - component: {fileID: 24927854}
+  - component: {fileID: 24927856}
   m_Layer: 0
   m_Name: Ritcher
   m_TagString: Player
@@ -162,6 +162,7 @@ Transform:
   - {fileID: 1173489730}
   - {fileID: 1751484984}
   - {fileID: 2106685508}
+  - {fileID: 1576008888}
   m_Father: {fileID: 1876383198}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -238,26 +239,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &24927850
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 24927844}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 121b6fc56952606419bc468936e95e38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 3
-  jumpForce: 5
-  knockbackForce: 4
-  knockbackDuration: 0.5
-  hitBoxAtaque: {fileID: 1527201175}
-  dropItem: {fileID: 1173489729}
-  contagemCoracoesText: {fileID: 601797786}
-  coracoesColetados: 10
 --- !u!95 &24927851
 Animator:
   serializedVersion: 5
@@ -331,6 +312,27 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.28, y: 0.51}
   m_Direction: 0
+--- !u!114 &24927856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 24927844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 121b6fc56952606419bc468936e95e38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 3
+  jumpForce: 5
+  knockbackForce: 5
+  knockbackDuration: 0.5
+  hitBoxAtaque: {fileID: 1527201175}
+  dropItem: {fileID: 1173489729}
+  throwCruz: {fileID: 2106685507}
+  contagemCoracoesText: {fileID: 601797786}
+  coracoesColetados: 10
 --- !u!1 &99926692
 GameObject:
   m_ObjectHideFlags: 0
@@ -2577,7 +2579,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1035295597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2677,7 +2679,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1035295596}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.38, y: -2.09, z: 0}
+  m_LocalPosition: {x: 13.92, y: -2.09, z: 0}
   m_LocalScale: {x: 1.1856, y: 1.1856, z: 1.1856}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3570,6 +3572,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 21
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1576008887
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1576008888}
+  m_Layer: 0
+  m_Name: Especial
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1576008888
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1576008887}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 24927845}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1587154495
 GameObject:
@@ -5093,7 +5126,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2106685507}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.353, y: 0.081, z: 0}
+  m_LocalPosition: {x: 0.353, y: 0.08, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5114,7 +5147,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cruzAPrefab: {fileID: 5921544811732374961, guid: 8133ebd3c8da9be42975d50aa851da29, type: 3}
   cruzASpeed: 5
-  playerController: {fileID: 24927850}
+  playerController: {fileID: 24927856}
 --- !u!1 &2117264280
 GameObject:
   m_ObjectHideFlags: 0

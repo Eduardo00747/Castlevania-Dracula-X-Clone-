@@ -16,14 +16,24 @@ public class PlayerController : MonoBehaviour
     private bool isAttacking = false; // Verifica se o personagem está atacando
     private bool canFlip = true; // Verifica se o personagem pode fazer flip
 
+    // Movimentos de armas
     private bool isThrowingWeapon = false; // Verifica se o personagem está jogando a arma
     private bool isAttackingDown = false; // Verifica se o personagem está realizando um ataque abaixado
 
+    // Movimentos especiais
+    private bool isEspecialInicio = false; // Verifica se o personagem está iniciando o especial
+    private float especialDuration = 0.5f; // Duração total da animação "Especial Inicio" em segundos
 
+    private bool isEspecialFim = false; // Verifica se o personagem está no estado de "Especial Fim"
+    private bool isUsingSpecial = false; // Verifica se o personagem está executando a animação especial
+
+    private bool canMoveDuringSpecial = true; // Verifica se o personagem pode se mover durante a animação especial
+    private bool isSpecialAnimationFinished = true; // Verifica se a animação especial terminou
 
     // Variação para os objetos filhos
     public GameObject hitBoxAtaque; // Referência ao objeto HitBoxAtaque
     public GameObject dropItem; // Referência ao objeto Drop Item
+    public GameObject throwCruz; // Referência ao objeto Throw Cruz
 
     // Variáveis adicionais
     private float hitBoxOffsetX = 0.811f; // Posição X inicial da HitBoxAtaque
@@ -48,6 +58,9 @@ public class PlayerController : MonoBehaviour
 
         // Inicializar o objeto de texto com a contagem de corações
         contagemCoracoesText.text = "// 10";
+
+        // Obtém a referência do objeto "Throw Cruz"
+        throwCruz = transform.Find("Throw Cruz").gameObject;
     }
 
     private void Update()
@@ -76,7 +89,7 @@ public class PlayerController : MonoBehaviour
         Vector2 movement = new Vector2(horizontalInput, 0f);
 
         // Verificar se o jogador está agachado para bloquear o movimento
-        if (!isCrouching && !isAlert && !isAttacking && canMoveHorizontally)
+        if (!isCrouching && !isAlert && !isAttacking && canMoveHorizontally && !isUsingSpecial)
         {
             // Normalizar o vetor de movimento para manter a velocidade constante
             movement = movement.normalized;
@@ -105,7 +118,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Verificar se o jogador está no chão e pressionou o botão de espaço para pular
-        if (Input.GetKeyDown(KeyCode.Space) && !isJumping && !isCrouching && !isAlert && !isAttacking)
+        if (Input.GetKeyDown(KeyCode.Space) && !isJumping && !isCrouching && !isAlert && !isAttacking && !isUsingSpecial)
         {
             // Aplicar uma força vertical para simular o pulo
             rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
@@ -119,7 +132,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Verificar se o jogador está se movendo horizontalmente para reproduzir a animação "Walk"
-        if (Mathf.Abs(horizontalInput) > 0f && !isCrouching && !isAlert && !isAttacking && canMoveHorizontally)
+        if (Mathf.Abs(horizontalInput) > 0f && !isCrouching && !isAlert && !isAttacking && canMoveHorizontally && !isUsingSpecial)
         {
             animator.SetBool("IsWalking", true);
         }
@@ -149,8 +162,9 @@ public class PlayerController : MonoBehaviour
         }
 
         // Verificar se o jogador está pressionando "Vertical Baixo" e "K" para realizar o ataque abaixado
-        if (verticalInput < 0 && Input.GetKeyDown(KeyCode.K) && !isAttacking && !isAlert)
+        if (verticalInput < 0 && Input.GetKeyDown(KeyCode.K) && !isAttacking && !isAlert && !isUsingSpecial)
         {
+            //IniciarEspecial();
             isAttackingDown = true;
             animator.SetBool("AtaqueDown", true);
 
@@ -158,9 +172,30 @@ public class PlayerController : MonoBehaviour
             Invoke("ActivateHitBoxAtaque", 0.08f);
         }
 
+        // Verificar se o jogador está pressionando "Vertical Cima" e "P" para iniciar o especial
+        if (verticalInput > 0 && Input.GetKeyDown(KeyCode.P) && isSpecialAnimationFinished && !isUsingSpecial && !isJumping)
+        {
+            // Verificar se o jogador tem pelo menos 15 corações antes de iniciar o especial
+            if (coracoesColetados >= 15)
+            {
+                // Subtrair 15 corações da contagem
+                coracoesColetados -= 15;
+
+                // Atualizar o objeto de texto com a nova contagem de corações
+                contagemCoracoesText.text = "// " + coracoesColetados.ToString();
+
+                // Iniciar o especial
+                IniciarEspecial();
+            }
+            else
+            {
+                // Mostrar uma mensagem de que o personagem não tem corações suficientes para o especial
+                Debug.Log("Não há corações suficientes para ativar o especial!");
+            }
+        }
 
         // Verificar se o jogador pressionou a tecla "K" para iniciar o ataque, mas apenas se não estiver no estado de alerta
-        if (Input.GetKeyDown(KeyCode.K) && !isAttacking && !isAlert)
+        if (Input.GetKeyDown(KeyCode.K) && !isAttacking && !isAlert && !isUsingSpecial)
         {
             isAttacking = true;
             animator.SetBool("Ataque", true);
@@ -198,6 +233,12 @@ public class PlayerController : MonoBehaviour
         dropItemPos.x = dropItemPosX;
         dropItem.transform.localPosition = dropItemPos;
 
+        // Atualizar a posição do Throw Cruz com base na direção do movimento
+        float throwCruzPosX = isMovingLeft ? -0.353f : 0.353f;
+        Vector3 throwCruzPos = throwCruz.transform.localPosition;
+        throwCruzPos.x = throwCruzPosX;
+        throwCruz.transform.localPosition = throwCruzPos;
+
         // Verificar se a animação de jogar arma terminou
         if (isThrowingWeapon && animator.GetCurrentAnimatorStateInfo(0).IsName("Jogar arma") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
         {
@@ -205,6 +246,90 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("ThrowWeapon", false);
         }
 
+        // Verificar se a animação de especial inicio terminou
+        if (isEspecialInicio && animator.GetCurrentAnimatorStateInfo(0).IsName("Especial Inicio"))
+        {
+            // Obter a duração normalizada da animação atual
+            float currentNormalizedTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+
+            // Calcular a velocidade necessária para que a animação dure especialDuration segundos
+            float animSpeed = currentNormalizedTime < 1.0f ? 1.0f / currentNormalizedTime : 1.0f;
+
+            // Configurar o parâmetro "Speed" da animação para controlar a velocidade de reprodução
+            animator.SetFloat("Speed", animSpeed);
+
+            // Verificar se a animação terminou (quando a duração normalizada for maior ou igual a 1)
+            if (currentNormalizedTime >= 1.0f)
+            {
+                // Chamar o método FinalizarEspecial() após o tempo de duração especificado
+                Invoke("FinalizarEspecial", especialDuration);
+            }
+        }
+
+        // Verificar se a animação de especial fim terminou
+        if (isEspecialFim && animator.GetCurrentAnimatorStateInfo(0).IsName("Especial Fim"))
+        {
+            // Chamar o método para voltar para a animação "Idle" após o tempo especificado
+            StartCoroutine(VoltarParaIdleAposEspecialFim());
+        }
+
+        // Verificar se o personagem está usando o especial e desativar a movimentação horizontal e o flip
+        if (isUsingSpecial && canMoveDuringSpecial)
+        {
+            canMoveDuringSpecial = false;
+            canMoveHorizontally = false;
+            canFlip = false;
+        }
+    }
+
+    // Método para iniciar o especial
+    private void IniciarEspecial()
+    {
+        isUsingSpecial = true;
+        isSpecialAnimationFinished = false;
+        isEspecialInicio = true;
+        animator.SetBool("EspecialInicio", true);
+    }
+
+    public void OnSpecialAnimationFinished()
+    {
+        isSpecialAnimationFinished = true;
+    }
+
+    private void FinalizarEspecial()
+    {
+        isEspecialFim = true;
+        OnSpecialAnimationFinished();
+        animator.SetBool("EspecialFim", true);
+
+        // Redefinir a variável isEspecialInicio
+        isEspecialInicio = false;
+
+        // Atualizar o objeto de texto com a nova contagem de corações
+        contagemCoracoesText.text = "// " + coracoesColetados.ToString();
+    }
+
+    private IEnumerator VoltarParaIdleAposEspecialFim()
+    {
+        yield return new WaitForSeconds(1.5f);
+
+        // Redefinir as variáveis isEspecialFim e isUsingSpecial, e desativar a animação EspecialFim
+        isEspecialFim = false;
+        isUsingSpecial = false;
+        animator.SetBool("EspecialFim", false);
+
+        // Verificar se o jogador não está pulando nem agachado para ativar a animação Idle
+        if (!isJumping && !isCrouching)
+        {
+            animator.SetBool("IsWalking", false); // Certificar-se de que a animação "Walk" também seja desativada, se necessário
+            animator.SetBool("EspecialInicio", false); // Desativar a animação "EspecialInicio" caso ainda esteja ativa
+            animator.SetBool("Idle", true);
+        }
+
+        // Reativar a movimentação horizontal e o flip
+        canMoveDuringSpecial = true;
+        canMoveHorizontally = true;
+        canFlip = true;
     }
 
     private void ActivateHitBoxAtaque()
@@ -236,7 +361,7 @@ public class PlayerController : MonoBehaviour
             isJumping = false;
 
             // Voltar à animação de "Idle" se não estiver agachado e não estiver em estado de alerta
-            if (!isCrouching && !isAlert)
+            if (!isCrouching && !isAlert && !isUsingSpecial)
             {
                 animator.SetBool("Jump", false);
             }
@@ -244,6 +369,9 @@ public class PlayerController : MonoBehaviour
             // Desbloquear o movimento horizontal quando tocar o chão
             canMoveHorizontally = true;
         }
+
+        // Linha adicionada para redefinir o parâmetro "Jump" para falso
+        animator.SetBool("Jump", false);
 
         // Verificar se o personagem colidiu com um objeto de tag "Coracao"
         if (collision.gameObject.CompareTag("Coracao"))
@@ -306,6 +434,9 @@ public class PlayerController : MonoBehaviour
     public void SubtractHeart()
     {
         coracoesColetados--;
+
+        // Garantir que a contagem não seja menor que zero
+        coracoesColetados = Mathf.Max(coracoesColetados, 0);
 
         // Atualizar o objeto de texto com a nova contagem de corações
         contagemCoracoesText.text = "// " + coracoesColetados.ToString();

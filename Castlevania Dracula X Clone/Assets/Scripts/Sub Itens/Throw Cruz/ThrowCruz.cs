@@ -8,14 +8,18 @@ public class ThrowCruz : MonoBehaviour
     public float cruzASpeed = 10f; // Velocidade da Cruz A
 
     private SubWeapons subWeaponsScript; // Referência ao script SubWeapons
+    private SpriteRenderer playerSpriteRenderer; // Referência ao SpriteRenderer do personagem "Ritcher"
 
-    // Referência à contagem de corações do script PlayerController
+    // Referência ao script PlayerController
     public PlayerController playerController;
 
     private void Start()
     {
         // Obter a referência ao script SubWeapons no objeto "Ritcher"
         subWeaponsScript = GetComponentInParent<SubWeapons>();
+
+        // Obter a referência ao SpriteRenderer no objeto "Ritcher"
+        playerSpriteRenderer = GetComponentInParent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -35,7 +39,19 @@ public class ThrowCruz : MonoBehaviour
                 // Verificar se o Rigidbody2D foi encontrado e definir a velocidade da Cruz A
                 if (cruzARigidbody != null)
                 {
-                    cruzARigidbody.velocity = transform.right * cruzASpeed;
+                    // Verificar a direção do flip do sprite renderer e ajustar a velocidade e posição da cruz
+                    if (playerSpriteRenderer.flipX)
+                    {
+                        // Sprite está em flip (olhando para a esquerda)
+                        cruzARigidbody.velocity = -transform.right * cruzASpeed; // Inverter a velocidade para a esquerda
+                        cruzAInstance.transform.localScale = new Vector3(-4f, 4f, 4f); // Inverter a escala da cruz para a esquerda
+                    }
+                    else
+                    {
+                        // Sprite não está em flip (olhando para a direita)
+                        cruzARigidbody.velocity = transform.right * cruzASpeed; // Manter a velocidade para a direita
+                        cruzAInstance.transform.localScale = new Vector3(4f, 4f, 4f); // Manter a escala da cruz para a direita
+                    }
 
                     // Chamar a função do PlayerController para subtrair 1 coração
                     playerController.SubtractHeart();
