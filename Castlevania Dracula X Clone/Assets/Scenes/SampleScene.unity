@@ -139,6 +139,7 @@ GameObject:
   - component: {fileID: 24927853}
   - component: {fileID: 24927854}
   - component: {fileID: 24927856}
+  - component: {fileID: 24927857}
   m_Layer: 0
   m_Name: Ritcher
   m_TagString: Player
@@ -328,11 +329,31 @@ MonoBehaviour:
   jumpForce: 5
   knockbackForce: 5
   knockbackDuration: 0.5
+  isJumping: 0
   hitBoxAtaque: {fileID: 1527201175}
   dropItem: {fileID: 1173489729}
   throwCruz: {fileID: 2106685507}
   contagemCoracoesText: {fileID: 601797786}
-  coracoesColetados: 10
+  coracoesColetados: 100
+  canMoveHorizontally: 1
+--- !u!114 &24927857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 24927844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebdbaf63daff696489263cef0941b030, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  especialAscendSpeed: 10
+  especialDescendSpeed: 10
+  maxAscendHeight: 3.5
+  especialDuration: 1
+  groundTag: Ground
+  especialCooldownTime: 3
 --- !u!1 &99926692
 GameObject:
   m_ObjectHideFlags: 0

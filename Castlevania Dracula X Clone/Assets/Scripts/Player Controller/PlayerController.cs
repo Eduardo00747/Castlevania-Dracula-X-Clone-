@@ -9,8 +9,10 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 5f; // Força do pulo
     public float knockbackForce = 5f; // Força do knockback
     public float knockbackDuration = 0.5f; // Duração do knockback
+    private bool verticalKeyPressed = false;
 
-    private bool isJumping = false; // Verifica se o personagem está pulando
+
+    public bool isJumping = false; // Verifica se o personagem está pulando
     private bool isCrouching = false; // Verifica se o personagem está agachado
     private bool isAlert = false; // Verifica se o personagem está em estado de alerta
     private bool isAttacking = false; // Verifica se o personagem está atacando
@@ -48,7 +50,7 @@ public class PlayerController : MonoBehaviour
     // Contagem de coração
     public TMP_Text contagemCoracoesText; // Referência para o objeto de texto "Contagem Corações"
     public int coracoesColetados = 10; // Contagem de corações coletados
-    private bool canMoveHorizontally = true; // Controla se o personagem pode se mover horizontalmente
+    public bool canMoveHorizontally = true; // Controla se o personagem pode se mover horizontalmente
 
     private void Start()
     {
@@ -87,6 +89,9 @@ public class PlayerController : MonoBehaviour
 
         // Calcular a direção do movimento
         Vector2 movement = new Vector2(horizontalInput, 0f);
+
+        // Verificar se a tecla vertical foi pressionada
+        verticalKeyPressed = (verticalInput != 0);
 
         // Verificar se o jogador está agachado para bloquear o movimento
         if (!isCrouching && !isAlert && !isAttacking && canMoveHorizontally && !isUsingSpecial)
@@ -279,6 +284,13 @@ public class PlayerController : MonoBehaviour
             canMoveDuringSpecial = false;
             canMoveHorizontally = false;
             canFlip = false;
+        }
+
+        // Verificar se verticalKeyPressed é verdadeiro para fazer o personagem parar imediatamente
+        if (verticalKeyPressed && !isJumping && !isCrouching)
+        {
+            // Parar o personagem imediatamente definindo sua velocidade horizontal para zero
+            rb.velocity = new Vector2(0f, rb.velocity.y);
         }
     }
 
