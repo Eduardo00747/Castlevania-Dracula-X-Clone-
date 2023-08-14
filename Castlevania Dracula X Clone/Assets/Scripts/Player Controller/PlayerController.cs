@@ -11,7 +11,11 @@ public class PlayerController : MonoBehaviour
     public float knockbackDuration = 0.5f; // Duração do knockback
     private bool verticalKeyPressed = false;
 
+    //Variaveis Escada
+    private GameObject stairsObject; // Referência ao objeto "Stairs" que contém a escada
+    private bool isCollidingWithEscada = false; // Verifica se o personagem está colidindo com a tag "Escada"
 
+    //Variaveis de Controles
     public bool isJumping = false; // Verifica se o personagem está pulando
     private bool isCrouching = false; // Verifica se o personagem está agachado
     private bool isAlert = false; // Verifica se o personagem está em estado de alerta
@@ -36,6 +40,7 @@ public class PlayerController : MonoBehaviour
     public GameObject hitBoxAtaque; // Referência ao objeto HitBoxAtaque
     public GameObject dropItem; // Referência ao objeto Drop Item
     public GameObject throwCruz; // Referência ao objeto Throw Cruz
+    public GameObject StairsMoviment; // Referencia ao objeto StairsMoviment
 
     // Variáveis adicionais
     private float hitBoxOffsetX = 0.811f; // Posição X inicial da HitBoxAtaque
@@ -60,6 +65,9 @@ public class PlayerController : MonoBehaviour
 
         // Inicializar o objeto de texto com a contagem de corações
         contagemCoracoesText.text = "// 10";
+
+        // Obter a referência do objeto "Stairs"
+        stairsObject = GameObject.Find("Stairs");
 
         // Obtém a referência do objeto "Throw Cruz"
         throwCruz = transform.Find("Throw Cruz").gameObject;
@@ -125,6 +133,10 @@ public class PlayerController : MonoBehaviour
         // Verificar se o jogador está no chão e pressionou o botão de espaço para pular
         if (Input.GetKeyDown(KeyCode.Space) && !isJumping && !isCrouching && !isAlert && !isAttacking && !isUsingSpecial)
         {
+
+            // Desativar os objetos filhos do objeto "Stairs"
+            DeactivateStairsChildren();
+
             // Aplicar uma força vertical para simular o pulo
             rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
             isJumping = true;
@@ -156,6 +168,27 @@ public class PlayerController : MonoBehaviour
         {
             isAlert = false;
             animator.SetBool("Alerta", false);
+        }
+
+        // Verificar se a tecla "Vertical Cima" está pressionada para ativar o estado de alerta
+        if (verticalInput > 0)
+        {
+            isAlert = true;
+            animator.SetBool("Alerta", true);
+
+            // Ativar todos os filhos do objeto "Stairs"
+            ActivateStairsChildren(true);
+        }
+        else
+        {
+            isAlert = false;
+            animator.SetBool("Alerta", false);
+
+            // Desativar todos os filhos do objeto "Stairs" apenas se não estiver colidindo com a tag "Escada"
+            if (!isCollidingWithEscada)
+            {
+                ActivateStairsChildren(false);
+            }
         }
 
         // Verificar se o jogador está pressionando "Vertical Cima" e "K" para jogar a arma
@@ -244,6 +277,12 @@ public class PlayerController : MonoBehaviour
         throwCruzPos.x = throwCruzPosX;
         throwCruz.transform.localPosition = throwCruzPos;
 
+        // Atualizar a posição do StairsMoviment com base na direção do movimento
+        float StairsMovimentPosX = isMovingLeft ? -0.04f : 0.22f;
+        Vector3 StairsMovimentPos = StairsMoviment.transform.localPosition;
+        StairsMovimentPos.x = StairsMovimentPosX;
+        StairsMoviment.transform.localPosition = StairsMovimentPos;
+
         // Verificar se a animação de jogar arma terminou
         if (isThrowingWeapon && animator.GetCurrentAnimatorStateInfo(0).IsName("Jogar arma") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
         {
@@ -306,6 +345,22 @@ public class PlayerController : MonoBehaviour
     public void OnSpecialAnimationFinished()
     {
         isSpecialAnimationFinished = true;
+    }
+
+    private void ActivateStairsChildren(bool activate)
+    {
+        for (int i = 0; i < stairsObject.transform.childCount; i++)
+        {
+            stairsObject.transform.GetChild(i).gameObject.SetActive(activate);
+        }
+    }
+
+    private void DeactivateStairsChildren()
+    {
+        for (int i = 0; i < stairsObject.transform.childCount; i++)
+        {
+            stairsObject.transform.GetChild(i).gameObject.SetActive(false);
+        }
     }
 
     private void FinalizarEspecial()
@@ -414,6 +469,12 @@ public class PlayerController : MonoBehaviour
             contagemCoracoesText.text = "// " + coracoesColetados.ToString();
         }
 
+        // Verificar se o personagem colidiu com um objeto de tag "Escada"
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isCollidingWithEscada = true;
+        }
+
         // Verificar se o personagem colidiu com um objeto de tag "Inimigo"
         if (collision.gameObject.CompareTag("Inimigo"))
         {
@@ -430,6 +491,24 @@ public class PlayerController : MonoBehaviour
 
             // Aguardar um tempo antes de permitir a movimentação e o flip novamente
             StartCoroutine(EnableMovementAfterDelay(knockbackDuration));
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        // ...
+
+        // Verificar se o personagem saiu do colisor de um objeto de tag "Escada"
+        if (other.gameObject.CompareTag("EscadaOff"))
+        {
+            isCollidingWithEscada = false;
+
+            // Desativar todos os filhos do objeto "Stairs" apenas se não estiver pressionando a tecla "Vertical Cima"
+            if (!isAlert)
+            {
+                ActivateStairsChildren(false);
+                DeactivateStairsChildren();
+            }
         }
     }
 

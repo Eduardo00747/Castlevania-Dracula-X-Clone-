@@ -17,11 +17,19 @@ public class EnemyController : MonoBehaviour
     private bool hasAttacked; // Verifica se o inimigo já atacou durante a pausa atual
     private Rigidbody2D rb;
     private Animator animator;
+    private SpriteRenderer spriteRenderer;
+    private Transform spawnOssoTransform; // Referência para o transform do objeto "Spawn Osso"
+
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
+        // Obter a referência do transform do objeto "Spawn Osso"
+        spawnOssoTransform = transform.Find("Spawn Osso");
+
     }
 
     private void Update()
@@ -32,6 +40,42 @@ public class EnemyController : MonoBehaviour
         {
             // Calcular a direção do movimento em relação ao personagem
             moveDirection = (int)Mathf.Sign(player.transform.position.x - transform.position.x);
+
+            bool isPlayerOnRight = player.transform.position.x > transform.position.x;
+
+            if (isPlayerOnRight)
+            {
+                spriteRenderer.flipX = true; // Inverte o sprite em X
+            }
+            else
+            {
+                spriteRenderer.flipX = false; // Restaura a orientação do sprite
+            }
+
+            if (isPlayerOnRight)
+            {
+                spriteRenderer.flipX = true; // Inverte o sprite em X
+
+                // Verificar se o objeto "Spawn Osso" existe e ajustar sua posição em X
+                if (spawnOssoTransform != null)
+                {
+                    Vector3 newPosition = spawnOssoTransform.localPosition;
+                    newPosition.x = 0.13f;
+                    spawnOssoTransform.localPosition = newPosition;
+                }
+            }
+            else
+            {
+                spriteRenderer.flipX = false; // Restaura a orientação do sprite
+
+                // Verificar se o objeto "Spawn Osso" existe e ajustar sua posição de volta
+                if (spawnOssoTransform != null)
+                {
+                    Vector3 originalPosition = spawnOssoTransform.localPosition;
+                    originalPosition.x = -0.17f; // Posição original em X
+                    spawnOssoTransform.localPosition = originalPosition;
+                }
+            }
 
             // Movimento de perseguição com pausas para ataque do persongem
             float chaseMovement = Mathf.PingPong(Time.time, 2f) <= 0.5f ? 0f : moveDirection * chaseSpeed;
