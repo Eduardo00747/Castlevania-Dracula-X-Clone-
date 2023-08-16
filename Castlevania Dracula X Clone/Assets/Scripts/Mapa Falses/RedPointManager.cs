@@ -36,7 +36,7 @@ public class RedPointManager : MonoBehaviour
         caveira.SetActive(true);
 
         // Aguarda mais 1 segundo antes de carregar a cena "Fase 1"
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.9f);
         SceneManager.LoadScene("Fase 1");
     }
 }

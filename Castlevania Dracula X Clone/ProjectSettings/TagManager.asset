@@ -20,6 +20,7 @@ TagManager:
   - ClimbUp
   - ClimbDown
   - StairsUpDown
+  - Troca de Fase
   layers:
   - Default
   - TransparentFX

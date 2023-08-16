@@ -40,6 +40,9 @@ public class PlayerController : MonoBehaviour
     public GameObject hitBoxAtaque; // Referência ao objeto HitBoxAtaque
     public GameObject dropItem; // Referência ao objeto Drop Item
     public GameObject throwCruz; // Referência ao objeto Throw Cruz
+    public GameObject throwMachado; //Referencia ao objeto Throw Machado 
+    public GameObject throwFaca; //Referencia ao objeto Throw Machado 
+    public GameObject throwAguaBenta; //Referencia ao objeto Throw Machado 
     public GameObject StairsMoviment; // Referencia ao objeto StairsMoviment
 
     // Variáveis adicionais
@@ -276,6 +279,24 @@ public class PlayerController : MonoBehaviour
         Vector3 throwCruzPos = throwCruz.transform.localPosition;
         throwCruzPos.x = throwCruzPosX;
         throwCruz.transform.localPosition = throwCruzPos;
+
+        // Atualizar a posição do Throw Cruz com base na direção do movimento
+        float throwMachadoPosX = isMovingLeft ? -0.2f : 0.12f;
+        Vector3 throwMachadoPos = throwMachado.transform.localPosition;
+        throwMachadoPos.x = throwMachadoPosX;
+        throwMachado.transform.localPosition = throwMachadoPos;
+
+        // Atualizar a posição do Throw Cruz com base na direção do movimento
+        float throwFacaPosX = isMovingLeft ? -0.3f : 0.3f;
+        Vector3 throwFacaPos = throwFaca.transform.localPosition;
+        throwFacaPos.x = throwFacaPosX;
+        throwFaca.transform.localPosition = throwFacaPos;
+
+        // Atualizar a posição do Throw Cruz com base na direção do movimento
+        float throwAguaBentaPosX = isMovingLeft ? -0.2f : 0.2f;
+        Vector3 throwAguaBentaPos = throwAguaBenta.transform.localPosition;
+        throwAguaBentaPos.x = throwAguaBentaPosX;
+        throwAguaBenta.transform.localPosition = throwAguaBentaPos;
 
         // Atualizar a posição do StairsMoviment com base na direção do movimento
         float StairsMovimentPosX = isMovingLeft ? -0.04f : 0.22f;

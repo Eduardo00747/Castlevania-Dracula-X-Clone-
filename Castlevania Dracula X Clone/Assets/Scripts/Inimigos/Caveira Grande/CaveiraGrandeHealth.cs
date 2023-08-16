@@ -63,7 +63,7 @@ public class CaveiraGrandeHealth : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // Verifique se o inimigo colidiu com a tag "Ataque"
-        if (collision.CompareTag("Ataque"))
+        if (collision.CompareTag("Ataque") || collision.gameObject.CompareTag("Machado") || collision.gameObject.CompareTag("Cruz") || collision.gameObject.CompareTag("Faca"))
         {
             // Se colidiu com a tag "Ataque", chame a função TakeDamage e passe o valor do dano (por exemplo, 10)
             TakeDamage(10);
