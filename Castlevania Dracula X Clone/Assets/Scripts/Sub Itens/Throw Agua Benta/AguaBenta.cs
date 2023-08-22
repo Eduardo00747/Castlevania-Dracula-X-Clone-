@@ -37,14 +37,14 @@ public class AguaBenta : MonoBehaviour
         // Instancia o objeto "Fogo 2"
         if (fogo2Prefab != null)
         {
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.11f);
             Instantiate(fogo2Prefab, transform.position, Quaternion.identity);
         }
 
         // Instancia o objeto "Fogo 3"
         if (fogo3Prefab != null)
         {
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.12f);
             Instantiate(fogo3Prefab, transform.position, Quaternion.identity);
         }
 
