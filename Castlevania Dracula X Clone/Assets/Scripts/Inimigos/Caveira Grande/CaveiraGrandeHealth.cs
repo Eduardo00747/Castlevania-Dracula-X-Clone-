@@ -10,6 +10,10 @@ public class CaveiraGrandeHealth : MonoBehaviour
     // Referência para o componente Animator do inimigo
     private Animator animator;
 
+    //Audio de dano recebido 
+    private AudioSource audioSource; // Referência ao componente AudioSource
+    public AudioClip danoInimigo;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,6 +22,8 @@ public class CaveiraGrandeHealth : MonoBehaviour
 
         // Obtenha a referência para o componente Animator do inimigo
         animator = GetComponent<Animator>();
+
+        audioSource = GetComponent<AudioSource>(); // Obtém o componente AudioSource do personagem
     }
 
     // Função para receber dano
@@ -31,6 +37,7 @@ public class CaveiraGrandeHealth : MonoBehaviour
         {
             // Se a vida chegou a zero ou menos, chame a função de morte
             Die();
+            audioSource.PlayOneShot(danoInimigo);
         }
     }
 

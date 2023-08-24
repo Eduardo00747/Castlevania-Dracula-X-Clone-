@@ -36,8 +36,16 @@ public class SubWeapons : MonoBehaviour
     private ItemType previousEquippedItem = ItemType.None;
     private bool isFirstItemCollected = true;
 
+    // Referência ao componente AudioSource no objeto do personagem
+    private AudioSource audioSource;
+    // Sound effect a ser reproduzido quando um dos itens for destruído
+    public AudioClip soundWeapons;
+
     private void Start()
     {
+        // Obter o componente AudioSource no objeto do personagem
+        audioSource = GetComponent<AudioSource>();
+
         // Desativar todas as imagens dos itens no início do jogo
         facaImage.SetActive(false);
         machadoImage.SetActive(false);
@@ -50,6 +58,9 @@ public class SubWeapons : MonoBehaviour
         // Verificar colisão com itens
         if (collision.gameObject.CompareTag("Faca"))
         {
+            //Audio ao pegar corações 
+            audioSource.PlayOneShot(soundWeapons);
+
             Destroy(collision.gameObject);
 
             if (!isFirstItemCollected)
@@ -69,6 +80,9 @@ public class SubWeapons : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Machado"))
         {
+            //Audio ao pegar corações 
+            audioSource.PlayOneShot(soundWeapons);
+
             Destroy(collision.gameObject);
 
             if (!isFirstItemCollected)
@@ -88,6 +102,9 @@ public class SubWeapons : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Cruz"))
         {
+            //Audio ao pegar corações 
+            audioSource.PlayOneShot(soundWeapons);
+
             Destroy(collision.gameObject);
 
             if (!isFirstItemCollected)
@@ -107,6 +124,9 @@ public class SubWeapons : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Agua Benta"))
         {
+            //Audio ao pegar corações 
+            audioSource.PlayOneShot(soundWeapons);
+
             Destroy(collision.gameObject);
 
             if (!isFirstItemCollected)

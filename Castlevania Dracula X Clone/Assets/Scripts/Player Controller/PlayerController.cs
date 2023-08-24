@@ -22,6 +22,12 @@ public class PlayerController : MonoBehaviour
     private bool isAttacking = false; // Verifica se o personagem está atacando
     private bool canFlip = true; // Verifica se o personagem pode fazer flip
 
+    //Audio do personagem 
+    public AudioSource audioSource; // Adicione esta variável para acessar o componente AudioSource
+    public AudioClip attackSound; // Adicione esta variável para armazenar o som de ataque
+    public AudioClip soundEspecial;
+    public AudioClip coracaoSound;
+
     // Movimentos de armas
     private bool isThrowingWeapon = false; // Verifica se o personagem está jogando a arma
     private bool isAttackingDown = false; // Verifica se o personagem está realizando um ataque abaixado
@@ -31,10 +37,15 @@ public class PlayerController : MonoBehaviour
     private float especialDuration = 0.5f; // Duração total da animação "Especial Inicio" em segundos
 
     private bool isEspecialFim = false; // Verifica se o personagem está no estado de "Especial Fim"
-    private bool isUsingSpecial = false; // Verifica se o personagem está executando a animação especial
+    public bool isUsingSpecial = false; // Verifica se o personagem está executando a animação especial
 
     private bool canMoveDuringSpecial = true; // Verifica se o personagem pode se mover durante a animação especial
     private bool isSpecialAnimationFinished = true; // Verifica se a animação especial terminou
+
+    // Variáveis para controlar o movimento vertical durante o especial
+    private bool isRising = false;
+    private Vector3 targetPosition;
+    private float riseSpeed = 1.0f; // Ajuste a velocidade de subida conforme necessário
 
     // Variação para os objetos filhos
     public GameObject hitBoxAtaque; // Referência ao objeto HitBoxAtaque
@@ -54,6 +65,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
     private Animator animator;
+    private float originalGravityScale; // Adicione isso na seção de variáveis
 
     // Contagem de coração
     public TMP_Text contagemCoracoesText; // Referência para o objeto de texto "Contagem Corações"
@@ -65,6 +77,8 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        originalGravityScale = rb.gravityScale;
+        audioSource = GetComponent<AudioSource>(); // Obtenha a referência do componente AudioSource
 
         // Inicializar o objeto de texto com a contagem de corações
         contagemCoracoesText.text = "// 10";
@@ -243,6 +257,9 @@ public class PlayerController : MonoBehaviour
 
             // Ativar o objeto HitBoxAtaque após um atraso de 0.08 segundos
             Invoke("ActivateHitBoxAtaque", 0.08f);
+
+            // Reproduzir o som de ataque
+            audioSource.PlayOneShot(attackSound);
         }
         else if (!isAttackingDown)
         {
@@ -311,6 +328,26 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("ThrowWeapon", false);
         }
 
+        // Verificar se o personagem está usando o especial
+        if (isUsingSpecial)
+        {
+            rb.gravityScale = 0f; // Define a gravidade para 0
+            if (!isRising) // Verificar se o personagem ainda não está subindo e definir a posição alvo
+            {
+                isRising = true;
+                targetPosition = new Vector3(transform.position.x, 1.5f, transform.position.z);
+            }
+
+            // Interpolar suavemente entre a posição atual e a posição alvo
+            transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * riseSpeed);
+
+        }
+        else
+        {
+            rb.gravityScale = originalGravityScale; // Retorna à gravidade original
+            isRising = false; // Resetar a flag de subida quando não estiver mais usando o especial
+        }
+
         // Verificar se a animação de especial inicio terminou
         if (isEspecialInicio && animator.GetCurrentAnimatorStateInfo(0).IsName("Especial Inicio"))
         {
@@ -360,6 +397,7 @@ public class PlayerController : MonoBehaviour
         isUsingSpecial = true;
         isSpecialAnimationFinished = false;
         isEspecialInicio = true;
+        audioSource.PlayOneShot(soundEspecial);
         animator.SetBool("EspecialInicio", true);
     }
 
@@ -464,6 +502,9 @@ public class PlayerController : MonoBehaviour
         // Verificar se o personagem colidiu com um objeto de tag "Coracao"
         if (collision.gameObject.CompareTag("Coracao"))
         {
+            //Audio ao pegar corações 
+            audioSource.PlayOneShot(coracaoSound);
+
             // Destruir o objeto "Coração Pequeno"
             Destroy(collision.gameObject);
 
@@ -477,6 +518,9 @@ public class PlayerController : MonoBehaviour
         // Verificar se o personagem colidiu com um objeto de tag "Coracao Grande"
         if (collision.gameObject.CompareTag("Coracao Grande"))
         {
+            //Audio ao pegar corações 
+            audioSource.PlayOneShot(coracaoSound);
+
             // Destruir o objeto "Coração Grande"
             Destroy(collision.gameObject);
 
@@ -517,8 +561,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        // ...
-
+        
         // Verificar se o personagem saiu do colisor de um objeto de tag "Escada"
         if (other.gameObject.CompareTag("EscadaOff"))
         {

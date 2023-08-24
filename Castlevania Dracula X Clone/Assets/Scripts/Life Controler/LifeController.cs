@@ -7,10 +7,17 @@ public class LifeController : MonoBehaviour
     private Animator animator; // Referência para o componente Animator
     private bool isDead; // Flag para indicar se o personagem está morto
 
+    //Audio de dano recebido 
+    private AudioSource audioSource; // Referência ao componente AudioSource
+    public AudioClip damageSound;
+    public AudioClip Morte;
+
     private void Start()
     {
         currentHealth = maxHealth; // Inicializa a vida atual com o valor máximo
         animator = GetComponent<Animator>(); // Obtém o componente Animator do personagem
+        audioSource = GetComponent<AudioSource>(); // Obtém o componente AudioSource do personagem
+
     }
 
     public void TakeDamage(int damageAmount)
@@ -21,6 +28,12 @@ public class LifeController : MonoBehaviour
         if (currentHealth <= 0)
         {
             Die();
+            audioSource.PlayOneShot(Morte);
+        }
+        else
+        {
+            // Reproduz o efeito sonoro de dano
+            audioSource.PlayOneShot(damageSound); // Supondo que você definiu um AudioClip chamado "damageSound"
         }
     }
 

@@ -4,6 +4,19 @@ using UnityEngine;
 
 public class HitBoxAtaque : MonoBehaviour
 {
+
+    // Referência ao componente AudioSource no objeto do personagem
+    private AudioSource audioSource;
+
+    // Sound effect a ser reproduzido quando a vela for destruída
+    public AudioClip velaSound;
+
+    private void Start()
+    {
+        // Obter o componente AudioSource no objeto do personagem
+        audioSource = GetComponentInParent<AudioSource>();
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         // Verifica se colidiu com um inimigo de tag "Enemy"
@@ -23,6 +36,11 @@ public class HitBoxAtaque : MonoBehaviour
         // Verifica se colidiu com um objeto de tag "Vela"
         if (other.CompareTag("Vela"))
         {
+            // Reproduz o sound effect associado à destruição da vela
+            if (audioSource != null && velaSound != null)
+            {
+                audioSource.PlayOneShot(velaSound);
+            }
             // Destroi o objeto "Vela"
             Destroy(other.gameObject);
         }
