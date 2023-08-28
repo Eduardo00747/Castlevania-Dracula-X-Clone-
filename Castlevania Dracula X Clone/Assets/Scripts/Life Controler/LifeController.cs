@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LifeController : MonoBehaviour
 {
@@ -7,33 +8,36 @@ public class LifeController : MonoBehaviour
     private Animator animator; // Referência para o componente Animator
     private bool isDead; // Flag para indicar se o personagem está morto
 
-    //Audio de dano recebido 
+    public Slider healthSlider; // Referência ao objeto Slider.
+
+    // Audio de dano recebido
     private AudioSource audioSource; // Referência ao componente AudioSource
     public AudioClip damageSound;
-    public AudioClip Morte;
+    public AudioClip deathSound;
 
     private void Start()
     {
         currentHealth = maxHealth; // Inicializa a vida atual com o valor máximo
         animator = GetComponent<Animator>(); // Obtém o componente Animator do personagem
         audioSource = GetComponent<AudioSource>(); // Obtém o componente AudioSource do personagem
-
     }
 
     public void TakeDamage(int damageAmount)
     {
         currentHealth -= damageAmount; // Reduz a vida atual pelo valor do dano
 
+        // Atualize o valor do Slider com a vida atual do personagem.
+        healthSlider.value = (float)currentHealth / (float)maxHealth;
+
         // Verifica se a vida chegou a zero ou menos
         if (currentHealth <= 0)
         {
             Die();
-            audioSource.PlayOneShot(Morte);
         }
         else
         {
             // Reproduz o efeito sonoro de dano
-            audioSource.PlayOneShot(damageSound); // Supondo que você definiu um AudioClip chamado "damageSound"
+            audioSource.PlayOneShot(damageSound);
         }
     }
 
@@ -49,6 +53,9 @@ public class LifeController : MonoBehaviour
 
         // Define o parâmetro "Morte" como verdadeiro (true) para ativar a animação de morte
         animator.SetBool("Morte", true);
+
+        // Reproduz o som de morte
+        audioSource.PlayOneShot(deathSound);
 
         // Desativa o movimento do personagem
         DisableMovement();
@@ -79,7 +86,7 @@ public class LifeController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // Verifica se a colisão ocorreu com um inimigo de tag "Inimigo"
-        if (collision.gameObject.CompareTag("Inimigo"))
+        if (collision.gameObject.CompareTag("Inimigo")|| collision.gameObject.CompareTag("Morcego"))
         {
             // Reduz 10 pontos de vida
             TakeDamage(10);

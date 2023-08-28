@@ -21,6 +21,7 @@ TagManager:
   - ClimbDown
   - StairsUpDown
   - Troca de Fase
+  - Morcego
   layers:
   - Default
   - TransparentFX

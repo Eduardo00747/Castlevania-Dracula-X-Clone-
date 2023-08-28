@@ -34,7 +34,7 @@ public class HitBoxAtaque : MonoBehaviour
         }
 
         // Verifica se colidiu com um objeto de tag "Vela"
-        if (other.CompareTag("Vela"))
+        if (other.CompareTag("Vela")|| other.CompareTag("Morcego"))
         {
             // Reproduz o sound effect associado à destruição da vela
             if (audioSource != null && velaSound != null)

@@ -541,7 +541,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Verificar se o personagem colidiu com um objeto de tag "Inimigo"
-        if (collision.gameObject.CompareTag("Inimigo"))
+        if (collision.gameObject.CompareTag("Inimigo")||collision.gameObject.CompareTag("Morcego"))
         {
             // Desabilitar a movimentação horizontal
             canMoveHorizontally = false;
